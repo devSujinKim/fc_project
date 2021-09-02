@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { BASE_URL } from '../constants/urls';
 import axios from 'axios';
+
+axios.defaults.baseURL = BASE_URL;
 
 const TodoDetail = () => {
   const [todoDetail, setTodoDetail] = useState('');
@@ -14,16 +17,18 @@ const TodoDetail = () => {
   const id = router.query.id;
   const todoId = router.query.todoId;
 
-  const TodoData = async () => {
-    const todos = await axios.get(`http://localhost:4000/todos/${id}`);
+  const TodoData = async (id) => {
+    const todos = await axios.get(`todos/${id}`);
     setTodoDetail(todos.data.text);
-    const comments = (await axios.get(`http://localhost:4000/comments/`)).data;
+    const comments = (await axios.get(`/comments`)).data;
     const curComments = comments.filter((comment) => comment.todoId === id);
     setComments(curComments);
   };
 
   useEffect(() => {
-    TodoData();
+    if (id) {
+      TodoData(id);
+    }
   }, [router]);
 
   const onChange = (e) => {
@@ -32,7 +37,7 @@ const TodoDetail = () => {
 
   const onCreate = async (commentId) => {
     const response = await axios
-      .post(`http://localhost:4000/comments`, {
+      .post(`/comments`, {
         id: commentId++,
         todoId: id,
         text: text,
@@ -40,6 +45,7 @@ const TodoDetail = () => {
       .then((res) => {
         const newComments = [...comments, res.data];
         setComments(newComments);
+        setText('');
       });
   };
 
