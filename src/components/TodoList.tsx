@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BASE_URL } from '../constants/urls';
+import { BASE_URL } from '../constants/url';
 
 axios.defaults.baseURL = BASE_URL;
 
