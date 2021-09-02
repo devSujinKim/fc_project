@@ -10,6 +10,8 @@ interface Todo {
   text: string;
 }
 
+let todoItemId = 0;
+
 const TodoList = () => {
   const [todoItem, setTodoItem] = useState<string>('');
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -23,11 +25,11 @@ const TodoList = () => {
     TodosData();
   }, []);
 
-  const onCreate = async (id: number): Promise<void> => {
+  const onCreate = async (): Promise<void> => {
     if (todoItem && todoItem !== '') {
       await axios
         .post(`/todos`, {
-          id: id++,
+          id: todoItemId++,
           text: todoItem,
         })
         .then((res) => {
