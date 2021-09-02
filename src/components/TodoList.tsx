@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Link from './Link';
 import { BASE_URL } from '../constants/urls';
 
 axios.defaults.baseURL = BASE_URL;
@@ -73,7 +72,7 @@ const TodoList = () => {
       <ul>
         {todos.map((todo: Todo) => (
           <li key={todo.id}>
-            <Link href={`/todos/${todo.id}`}>{todo.text}</Link>
+            <a href={`/todos/${todo.id}`}>{todo.text}</a>
             <button onClick={() => onRemove(todo.id)}>삭제</button>
           </li>
         ))}
